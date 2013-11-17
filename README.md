@@ -4,7 +4,7 @@ Compile (and minify) CoffeeScript in browser
 
 [Go ahead!](http://ukoloff.github.io/coffee/)
 
-# Credits
+## Credits
 
 - [CoffeeScript](http://coffeescript.org/)
 - [UglifyJS 2](https://github.com/mishoo/UglifyJS2)
