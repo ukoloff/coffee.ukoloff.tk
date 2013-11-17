@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CoffeeScript compiler</title>
+<link rel="stylesheet" href="coffee.css">
+<script src="ace/ace.js" charset="utf-8"></script>
+<script src='coffee-script.js'></script>    
+<script src='uglify-js2.js'></script>    
+<script src='coffee.js'></script>
+</head>
+<body>
+
+<pre id="coffee">
+console.log 'Hi!'
+</pre>
+<pre id='javascript'></pre>
+
+<div id='popup'>
+&raquo;
+<div>
+<label><input type='checkbox' name='bare'>
+(){...}()
+</label><br>
+<label><input type='checkbox' name='header'>
+Version
+</label><br>
+<label><input type='checkbox' name='minify'>
+Minify
+</label><br>
+</div>
+</div>
+
+<div id='error'>
+<span></span>
+<input type=button value='Go!'>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+body {
+  overflow: hidden;
+}
+
+pre {
+  margin: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+}
+
+#coffee {
+  position: absolute;
+  left: 0;
+}
+
+#javascript {
+  position: absolute;
+  right: 0;
+}
+
+#error {
+  display: none;
+  position: absolute;
+  z-index: 200;
+  right: 0;
+  top: 0;
+  margin: 1em;
+  background: yellow;
+  border: 3px double red;
+  padding: 0.6ex;
+}
+
+#popup {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  line-height: 90%;
+  z-index: 100;
+  background: #BBBBBB;
+  border: 2px outset #EEEEEE;
+  padding: 0 0.4ex;
+}
+
+#popup > div {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.1ex;
+  background: silver;
+  border: 1px solid black;
+  white-space: nowrap;
+}
