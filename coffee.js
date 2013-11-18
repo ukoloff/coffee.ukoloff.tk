@@ -15,12 +15,15 @@ for(var i=z.length-1; i>=0; i--)
 }
 
 z=document.getElementById('popup')
-var m=z.getElementsByTagName('div')[0]
-z.onmouseover=function(){m.style.display='block'}
-z.onmouseout=function(){m.style.display=''}
-z=m.getElementsByTagName('input')
-for(var i=z.length-1; i>=0; i--)
-  z[i].onclick=function()
+var 
+  popup=z.getElementsByTagName('div')[0],
+  x=z.getElementsByTagName('a')
+x[0].onclick=function() { popup.style.display='block' }
+x[1].onclick=function() { popup.style.display='' }
+
+x=z.getElementsByTagName('input')
+for(var i=x.length-1; i>=0; i--)
+  x[i].onclick=function()
   {
     Options[this.name]=this.checked
     Compile()

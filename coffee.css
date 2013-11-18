@@ -36,11 +36,16 @@ pre {
   position: absolute;
   left: 50%;
   top: 0;
-  line-height: 90%;
   z-index: 100;
+  line-height: 90%;
   background: #BBBBBB;
   border: 2px outset #EEEEEE;
   padding: 0 0.4ex;
+  font-size: 108%;
+}
+
+#popup a {
+  text-decoration: none;
 }
 
 #popup > div {
@@ -48,8 +53,12 @@ pre {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 0.1ex;
-  background: silver;
+  background: #DDDDDD;
   border: 1px solid black;
   white-space: nowrap;
+}
+
+#popup > div > div {
+  text-align: right;
+  background: #EEEEEE;
 }
