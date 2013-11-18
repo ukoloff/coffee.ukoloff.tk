@@ -18,8 +18,17 @@ z=document.getElementById('popup')
 var 
   popup=z.getElementsByTagName('div')[0],
   x=z.getElementsByTagName('a')
-x[0].onclick=function() { popup.style.display='block' }
-x[1].onclick=function() { popup.style.display='' }
+x[0].onclick=function()
+{
+  popup.style.display='block'
+  return false
+}
+
+x[1].onclick=function()
+{
+  popup.style.display=''
+  return false
+}
 
 x=z.getElementsByTagName('input')
 for(var i=x.length-1; i>=0; i--)
