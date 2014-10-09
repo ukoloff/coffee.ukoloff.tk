@@ -1,4 +1,7 @@
 name: Online CoffeeScript Compiler
 encoding: utf-8
 markdown: redcarpet
-pygments: false
+highlighter:
+exclude:
+  - CNAME
+  - README.md
