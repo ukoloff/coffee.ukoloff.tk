@@ -4,8 +4,8 @@ var
   chp = require('child_process'),
   github = require('github')
 
+uglify()
 coffee()
-// uglify()
 
 function uglify()
 {
@@ -25,32 +25,46 @@ function coffee()
 
   console.log('Fetching Coffee Script...')
 
-  var g = new github({version: '3.0.0'})
-  // g.repos.getTags(src, tags)
+  var
+    tags=[],
+    tag,
+    g = new github({version: '3.0.0'})
 
-  function tags(err, data)
+  g.repos.getTags(src, tagen)
+
+
+  function tagen(err, data)
   {
     if(err)
     {
-      console.log('Oops! :-(')
+      console.log('Oops! :-(', err.message)
       return
     }
-    console.log(data)
+    tags = data.map(function(x){return x.name})
+    fetchTag()
   }
 
-  g.repos.getContent(merge(src, {path: 'extras/coffee-script.js', ref: '1.8.0'}), blob)
+  function fetchTag()
+  {
+    if(tags.length<=0) return;
+    g.repos.getContent(merge(src, {path: 'extras/coffee-script.js', ref: tag = tags.shift()}), blob)
+  }
 
   function blob(err, data)
   {
     if(err)
     {
-      console.log('Oops! :-(')
+      console.log('Oops! :-(', err.message)
       return
     }
     var x=data.content
     if('base64'==data.encoding)
       x=new Buffer(x, 'base64').toString('ascii')
-    console.log(x)
+    var name=path.join(__dirname, '..', 'js', tag, 'coffee-script.js')
+    console.log(name, x.length)
+    try{fs.mkdirSync(path.dirname(name))}catch(e){}
+    fs.writeFileSync(name, x)
+    fetchTag()
   }
 }
 
