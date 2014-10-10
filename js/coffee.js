@@ -15,7 +15,7 @@ for(var i=z.length-1; i>=0; i--)
 }
 
 z=document.getElementById('popup')
-var 
+var
   popup=z.getElementsByTagName('div')[0],
   x=z.getElementsByTagName('a')
 x[0].onclick=function()
@@ -48,12 +48,12 @@ err.getElementsByTagName('input')[0].onclick=function()
 coffee.focus()
 Compile()
 coffee.getSession().on('change', Compile)
-            
+
 function Compile()
 {
  err.style.display='';
  try{
-  js=CoffeeScript.compile(coffee.getValue(), 
+  js=CoffeeScript.compile(coffee.getValue(),
     {bare: !Options.bare, header: Options.header})
   if(Options.minify)
     js=Minify(js)
@@ -78,4 +78,4 @@ function Minify(code)
   return ast.print_to_string()
 }
 
-}, 0)
+})
