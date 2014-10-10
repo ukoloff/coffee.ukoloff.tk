@@ -1,6 +1,13 @@
 {
+  "description": "Download & build dependencies",
+  "readme": "None",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ukoloff/coffee"
+  },
   "dependencies": {
+    "github": "^0.2.2",
     "request": "^2.45.0",
-    "github": "^0.2.2"
+    "uglify-js": "^2.4.15"
   }
 }
