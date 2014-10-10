@@ -25,8 +25,8 @@ function coffee()
 
   console.log('Fetching Coffee Script...')
 
-  g = new github({version: '3.0.0'})
-  g.repos.getTags(src, tags)
+  var g = new github({version: '3.0.0'})
+  // g.repos.getTags(src, tags)
 
   function tags(err, data)
   {
@@ -37,4 +37,30 @@ function coffee()
     }
     console.log(data)
   }
+
+  g.repos.getContent(merge(src, {path: 'extras/coffee-script.js', ref: '1.8.0'}), blob)
+
+  function blob(err, data)
+  {
+    if(err)
+    {
+      console.log('Oops! :-(')
+      return
+    }
+    var x=data.content
+    if('base64'==data.encoding)
+      x=new Buffer(x, 'base64').toString('ascii')
+    console.log(x)
+  }
+}
+
+function merge()
+{
+  var r={}
+  for(var i=0; i<arguments.length; i++)
+  {
+    var x=arguments[i]
+    for(var k in x)r[k]=x[k]
+  }
+  return r
 }
