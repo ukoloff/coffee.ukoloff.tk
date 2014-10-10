@@ -30,7 +30,7 @@ function coffee()
     tag,
     g = new github({version: '3.0.0'})
 
-  g.repos.getTags(src, tagen)
+  g.repos.getTags(merge(src, {per_page: 12}), tagen)
 
 
   function tagen(err, data)
@@ -41,6 +41,7 @@ function coffee()
       return
     }
     tags = data.map(function(x){return x.name})
+    fs.writeFileSync(path.join(__dirname, '..', 'js', 'menu.js'), "menu("+JSON.stringify(tags, null, '  ')+')\n')
     fetchTag()
   }
 
