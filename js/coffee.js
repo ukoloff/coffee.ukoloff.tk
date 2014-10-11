@@ -4,6 +4,7 @@ this.define = define
 define.amd = true
 define.menu = menu
 
+writeScript('uglify')
 writeScript('menu')
 
 function define(module)
