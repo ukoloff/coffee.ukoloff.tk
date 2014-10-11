@@ -1,7 +1,8 @@
+!function(){
+
 setTimeout(
 function(){
 
-var Options={}
 var err, errPos
 
 var z=document.getElementsByTagName('pre')
@@ -33,13 +34,9 @@ function hidePopup()
   return false
 }
 
-x=z.getElementsByTagName('input')
-for(var i=x.length-1; i>=0; i--)
-  x[i].onclick=function()
-  {
-    Options[this.name]=this.checked
-    Compile()
-  }
+var checkBoxes=z.getElementsByTagName('input')
+for(var i=checkBoxes.length-1; i>=0; i--)
+  checkBoxes[i].onclick=Compile
 
 err=document.getElementById('error')
 err.getElementsByTagName('input')[0].onclick=function()
@@ -55,6 +52,12 @@ coffee.getSession().on('change', Compile)
 function Compile()
 {
  err.style.display='';
+ var Options={}
+ for(var i =checkBoxes.length-1; i>=0; i--)
+ {
+   var cb=checkBoxes[i]
+   Options[cb.name]=cb.checked
+ }
  try{
   js=CoffeeScript.compile(coffee.getValue(),
     {bare: !Options.bare, header: Options.header})
@@ -81,4 +84,4 @@ function Minify(code)
   return ast.print_to_string()
 }
 
-})
+})}()
