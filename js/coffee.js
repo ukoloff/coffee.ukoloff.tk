@@ -12,6 +12,7 @@ for(var i=z.length-1; i>=0; i--)
   x.setTheme("ace/theme/github")
   x.getSession().setMode("ace/mode/"+id)
   x.getSession().setUseWorker(false)
+  x.on('focus', hidePopup)
 }
 
 z=document.getElementById('popup')
@@ -24,7 +25,9 @@ x[0].onclick=function()
   return false
 }
 
-x[1].onclick=function()
+x[1].onclick=hidePopup
+
+function hidePopup()
 {
   popup.style.display=''
   return false
