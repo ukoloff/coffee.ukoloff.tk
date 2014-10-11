@@ -1,7 +1,30 @@
 !function(){
 
-setTimeout(
-function(){
+this.define = define
+define.amd = true
+define.menu = menu
+
+writeScript('menu')
+
+function define(module)
+{
+  if(1!=arguments.length) return
+  if('function'==typeof module) module=module()
+  !function(){ this.CoffeeScript=module }()
+  setTimeout(Start)
+}
+
+function menu(tags)
+{
+  writeScript(tags[0]+'/coffee-script')
+}
+
+function writeScript(script)
+{
+  document.writeln('<script src="js/'+script+'.js"></script>')
+}
+
+function Start(){
 
 var err, errPos
 
@@ -84,4 +107,5 @@ function Minify(code)
   return ast.print_to_string()
 }
 
-})}()
+}
+}()
