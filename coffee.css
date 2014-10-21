@@ -62,3 +62,7 @@ pre {
   text-align: right;
   background: #EEEEEE;
 }
+
+#popup select {
+  width: 100%;
+}

@@ -3,6 +3,9 @@
 this.define = define
 define.amd = true
 define.menu = menu
+define.select = select
+
+var tags=[]
 
 writeScript('uglify')
 writeScript('menu')
@@ -15,9 +18,17 @@ function define(module)
   setTimeout(Start)
 }
 
-function menu(tags)
+function menu(tagz)
 {
-  writeScript(tags[0]+'/coffee-script')
+  writeScript((tags=tagz)[0]+'/coffee-script')
+}
+
+function select()
+{
+  var s=''
+  for(var i in tags)
+    s+='<option>'+tags[i]+'</option>'
+  document.writeln(s)
 }
 
 function writeScript(script)
