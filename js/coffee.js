@@ -71,7 +71,7 @@ function hidePopup()
 
 var checkBoxes=z.getElementsByTagName('input')
 for(var i=checkBoxes.length-1; i>=0; i--)
-  checkBoxes[i].onclick=Compile
+  checkBoxes[i].onclick=thenCompile
 
 err=document.getElementById('error')
 err.getElementsByTagName('input')[0].onclick=function()
@@ -81,8 +81,8 @@ err.getElementsByTagName('input')[0].onclick=function()
 }
 
 coffee.focus()
-Compile()
-coffee.getSession().on('change', Compile)
+thenCompile()
+coffee.getSession().on('change', thenCompile)
 
 function Compile()
 {
@@ -117,6 +117,11 @@ function Minify(code)
   ast.compute_char_frequency()
   ast.mangle_names()
   return ast.print_to_string()
+}
+
+function thenCompile()
+{
+  setTimeout(Compile)
 }
 
 }
