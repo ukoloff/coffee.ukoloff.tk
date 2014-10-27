@@ -3,7 +3,6 @@
 this.define = define
 define.amd = true
 define.menu = menu
-define.select = select
 
 var tags=[]
 
@@ -21,14 +20,6 @@ function define(module)
 function menu(tagz)
 {
   writeScript((tags=tagz)[0]+'/coffee-script')
-}
-
-function select()
-{
-  var s=''
-  for(var i in tags)
-    s+='<option>'+tags[i]+'</option>'
-  document.writeln(s)
 }
 
 function writeScript(script)
@@ -55,6 +46,7 @@ z=document.getElementById('popup')
 var
   popup=z.getElementsByTagName('div')[0],
   x=z.getElementsByTagName('a')
+
 x[0].onclick=function()
 {
   popup.style.display='block'
@@ -62,6 +54,16 @@ x[0].onclick=function()
 }
 
 x[1].onclick=hidePopup
+
+setVer(z.getElementsByTagName('select')[0])
+
+function setVer(sel)
+{
+  var s=''
+  for(var i in tags)
+    s+='<option>'+tags[i]+'</option>'
+  sel.innerHTML=s
+}
 
 function hidePopup()
 {
