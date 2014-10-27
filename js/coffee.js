@@ -63,6 +63,13 @@ function setVer(sel)
   for(var i in tags)
     s+='<option>'+tags[i]+'</option>'
   sel.innerHTML=s
+  sel.onchange=function()
+  {
+    js = document.createElement('script')
+    js.src = 'js/'+tags[sel.selectedIndex]+'/coffee-script.js'
+    document.getElementsByTagName('head')[0].appendChild(js)
+    sel.selectedIndex = -1
+  }
 }
 
 function hidePopup()
