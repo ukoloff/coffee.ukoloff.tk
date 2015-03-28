@@ -2,9 +2,10 @@
 
 var
   versions = [],
-  editors = {}
+  editors = {},
+  popup
 
-setTimeout(boot)
+setTimeout(boot, 100)
 
 this.define = function(vs)
 {
@@ -14,6 +15,7 @@ this.define = function(vs)
 function boot()
 {
   initEditors()
+  initPopup()
 }
 
 function initEditors()
@@ -30,8 +32,21 @@ function initEditors()
   }
 }
 
+function initPopup()
+{
+  var z = document.getElementById('options')
+  popup = document.getElementById('popup')
+  z.getElementsByTagName('input')[0].onclick=function()
+  {
+    popup.style.display = 'block'
+  }
+  popup.getElementsByTagName('a')[0].onclick = hidePopup
+}
+
 function hidePopup()
 {
+  popup.style.display=''
+  return false
 }
 
 }()

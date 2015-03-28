@@ -1,5 +1,7 @@
 body {
   overflow: hidden;
+  background: white;
+  color: black;
 }
 
 pre {
@@ -18,4 +20,38 @@ pre {
 #javascript {
   position: absolute;
   right: 0;
+}
+
+#options {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 50%;
+}
+
+#options #popup {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: silver;
+  border: 1px solid black;
+}
+
+#options #popup #close {
+  display: block;
+  text-align: right;
+  background: blue;
+  text-decoration: none;
+  color: white;
+}
+
+#options #popup #close:hover {
+  color: lime;
+}
+
+
+#options #popup label {
+  display: block;
+  white-space: nowrap;
 }
