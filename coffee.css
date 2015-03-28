@@ -11,9 +11,11 @@ pre {
 }
 
 #coffee {
+  position: absolute;
   left: 0;
 }
 
 #javascript {
+  position: absolute;
   right: 0;
 }
