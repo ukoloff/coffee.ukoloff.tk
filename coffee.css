@@ -36,6 +36,7 @@ pre {
   right: 0;
   background: silver;
   border: 1px solid black;
+  white-space: nowrap;
 }
 
 #options #popup #close {
@@ -50,8 +51,22 @@ pre {
   color: lime;
 }
 
+#options #popup select {
+  width: 100%;
+  -width: 7em;
+}
 
 #options #popup label {
   display: block;
-  white-space: nowrap;
+}
+
+#options #popup ul {
+  padding: 0;
+  margin: 0;
+  border-top: 1px dashed black;
+  list-style-type: none;
+}
+
+#options #popup ul a {
+  color: navy;
 }
