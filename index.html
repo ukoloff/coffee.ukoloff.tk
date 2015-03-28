@@ -17,14 +17,14 @@ console.log "Hello, #{who = 'world'}!"
 </pre>
 
 <div id='options'>
-<input type='button' value='&laquo;'>
+<input type='button' value='&laquo;' title='Show options'>
 <div id='popup'>
-  <a href='#' id='close'>&times;</a>
-  <select></select>
+  <a href='#' id='close' title='Hide options'>&times;</a>
+  <select title='Select Coffee Script version'></select>
   <label><input type='checkbox' name='bare'> (){...}()</label>
   <label><input type='checkbox' name='header' checked> Version</label>
   <label><input type='checkbox' name='minify'> Minify</label>
-  <ul>
+  <ul title='Open link in a new window'>
     <li><a href='https://github.com/ukoloff/coffee'
       target='_blank'>Source@github</a></li>
     <li><a href='http://coffeescript.org/'
