@@ -42,7 +42,7 @@ function coffee()
     }
     tags = data.map(function(x){return x.name})
     fs.writeFileSync(path.join(__dirname, '..', 'js', 'menu.js'),
-      "define.menu("+JSON.stringify(tags, null, '  ')+')\n')
+      "define("+JSON.stringify(tags, null, '  ')+')\n')
     fetchTag()
   }
 
