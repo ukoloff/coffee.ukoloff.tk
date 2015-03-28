@@ -29,6 +29,9 @@ pre {
   left: 50%;
 }
 
+#options > input {
+  padding: 0 0.5ex;
+}
 #options #popup {
   display: none;
   position: absolute;
