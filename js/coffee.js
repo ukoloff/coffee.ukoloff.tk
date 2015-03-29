@@ -18,6 +18,7 @@ function boot()
   reDefine()
   initEditors()
   initPopup()
+  initError()
 }
 
 function reDefine()
@@ -71,6 +72,17 @@ function hidePopup()
   return false
 }
 
+function initError()
+{
+  error = document.getElementById('error')
+  error.getElementsByTagName('a')[0].onclick = hideError
+}
+
+function hideError()
+{
+  error.style.display = ''
+}
+
 function select()
 {
   var v = versions[this.selectedIndex]
@@ -109,6 +121,8 @@ function compile()
   var
     Options={}, checkBoxes = popup.getElementsByTagName('input')
 
+  hideError()
+
   for(var i = checkBoxes.length-1; i>=0; i--)
   {
     var cb=checkBoxes[i]
@@ -126,11 +140,10 @@ function compile()
     editors.javascript.getSession().setUseWrapMode(Options.minify)
   }
   catch(e){
-    console.log(e)
     editors.javascript.setValue('')
-    // error.style.display='block'
-    // error.children[0].innerText=e.message
-    // errPos={x: e.location.first_column, y: e.location.first_line}
+    error.style.display='block'
+    error.children[1].innerText=e.message
+    errPos={x: e.location.first_column, y: e.location.first_line}
   }
 }
 
