@@ -38,6 +38,7 @@ function initEditors()
     x.getSession().setUseWorker(false)
     x.on('focus', hidePopup)
   }
+  editors.coffee.getSession().on('change', thenCompile)
 }
 
 function initPopup()
@@ -59,6 +60,9 @@ function initPopup()
   }
   z.onchange=select
   select.call(z)
+  z = popup.getElementsByTagName('input')
+  for(i = z.length-1; i>=0; i--)
+    z[i].onclick = thenCompile
 }
 
 function hidePopup()
