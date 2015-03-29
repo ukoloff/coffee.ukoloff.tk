@@ -92,7 +92,9 @@ function addScript(version)
 
 function loaded(coffee)
 {
-  compilers[coffee.VERSION] = compiler = coffee()
+  if('function'==typeof coffee)
+    coffee = coffee()
+  compilers[coffee.VERSION] = compiler = coffee
   thenCompile()
 }
 
