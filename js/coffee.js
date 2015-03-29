@@ -3,7 +3,7 @@
 var
   versions = [],
   editors = {},
-  popup, error,
+  popup, error, errPos,
   compiler, compilers = {}
 
 setTimeout(boot, 100)
@@ -40,6 +40,7 @@ function initEditors()
     x.on('focus', hidePopup)
   }
   editors.coffee.getSession().on('change', thenCompile)
+  editors.coffee.focus()
 }
 
 function initPopup()
@@ -68,7 +69,8 @@ function initPopup()
 
 function hidePopup()
 {
-  popup.style.display=''
+  if(popup)
+    popup.style.display=''
   return false
 }
 
@@ -76,11 +78,18 @@ function initError()
 {
   error = document.getElementById('error')
   error.getElementsByTagName('a')[0].onclick = hideError
+  error.getElementsByTagName('input')[0].onclick = go2err
 }
 
 function hideError()
 {
   error.style.display = ''
+}
+
+function go2err(){
+  editors.coffee.navigateTo(errPos.y, errPos.x)
+  editors.coffee.focus()
+  hideError()
 }
 
 function select()
