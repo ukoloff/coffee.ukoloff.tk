@@ -44,7 +44,7 @@ function initEditors()
 function initPopup()
 {
   var z = document.getElementById('options')
-  popup = document.getElementById('popup')
+  popup = z.getElementsByTagName('div')[0]
   z.getElementsByTagName('input')[0].onclick=function()
   {
     popup.style.display = 'block'

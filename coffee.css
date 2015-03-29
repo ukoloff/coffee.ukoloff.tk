@@ -32,7 +32,8 @@ pre {
 #options > input {
   padding: 0 0.5ex;
 }
-#options #popup {
+
+#options div {
   display: none;
   position: absolute;
   top: 0;
@@ -42,7 +43,7 @@ pre {
   white-space: nowrap;
 }
 
-#options #popup #close {
+#options #close {
   display: block;
   text-align: right;
   background: blue;
@@ -50,26 +51,26 @@ pre {
   color: white;
 }
 
-#options #popup #close:hover {
+#options #close:hover {
   color: lime;
 }
 
-#options #popup select {
+#options select {
   width: 100%;
   -width: 7em;
 }
 
-#options #popup label {
+#options label {
   display: block;
 }
 
-#options #popup ul {
+#options ul {
   padding: 0;
   margin: 0;
   border-top: 1px dashed black;
   list-style-type: none;
 }
 
-#options #popup ul a {
+#options ul a {
   color: navy;
 }
