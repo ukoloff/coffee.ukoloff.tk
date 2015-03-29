@@ -113,6 +113,7 @@ function addScript(version)
 
 function loaded(coffee)
 {
+  if(1!=arguments.length) return
   if('function'==typeof coffee)
     coffee = coffee()
   compilers[coffee.VERSION] = compiler = coffee
@@ -125,46 +126,65 @@ function thenCompile()
     setTimeout(compile)
 }
 
-function compile()
+function getOptions()
 {
   var
-    Options={}, checkBoxes = popup.getElementsByTagName('input')
-
-  hideError()
+    r = {},
+    checkBoxes = popup.getElementsByTagName('input')
 
   for(var i = checkBoxes.length-1; i>=0; i--)
   {
-    var cb=checkBoxes[i]
-    Options[cb.name]=cb.checked
+    var cb = checkBoxes[i]
+    r[cb.name] = cb.checked
   }
+  return r
+}
 
-  try{
-    js=compiler.compile(editors.coffee.getValue(), {
+function compile()
+{
+  var
+    Options=getOptions()
+
+  hideError()
+
+  try
+  {
+    var js = compiler.compile(editors.coffee.getValue(), {
       bare: !Options.bare,
       header: Options.header
     })
     if(Options.minify)
-      js=Minify(js)
+      js = safeMinify(js)
     editors.javascript.setValue(js)
     editors.javascript.getSession().setUseWrapMode(Options.minify)
   }
-  catch(e){
+  catch(e)
+  {
     editors.javascript.setValue('')
-    error.style.display='block'
-    error.children[1].innerText=e.message
-    errPos={x: e.location.first_column, y: e.location.first_line}
+    error.style.display = 'block'
+    error.children[1].innerText = e.message
+    errPos = {
+      x: e.location.first_column,
+      y: e.location.first_line
+    }
   }
 }
 
 function Minify(code)
 {
-  var ast=UglifyJS.parse(code)
+  var ast = UglifyJS.parse(code)
   ast.figure_out_scope()
-  ast=ast.transform(UglifyJS.Compressor())
+  ast = ast.transform(UglifyJS.Compressor())
   ast.figure_out_scope()
   ast.compute_char_frequency()
   ast.mangle_names()
   return ast.print_to_string()
+}
+
+function safeMinify(code)
+{
+  try{ return Minify(code) }
+  catch(e){ return code }
 }
 
 }()
