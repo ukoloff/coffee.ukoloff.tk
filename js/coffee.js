@@ -3,7 +3,8 @@
 var
   versions = [],
   editors = {},
-  popup
+  popup, error,
+  compiler, compilers = {}
 
 setTimeout(boot, 100)
 
@@ -14,8 +15,15 @@ this.define = function(vs)
 
 function boot()
 {
+  reDefine()
   initEditors()
   initPopup()
+}
+
+function reDefine()
+{
+  this.define = loaded
+  loaded.amd = true
 }
 
 function initEditors()
@@ -50,6 +58,7 @@ function initPopup()
     z.add(x)
   }
   z.onchange=select
+  select.call(z)
 }
 
 function hidePopup()
@@ -60,6 +69,74 @@ function hidePopup()
 
 function select()
 {
+  var v = versions[this.selectedIndex]
+  if(compilers[v])
+  {
+    compiler = compilers[v]
+    thenCompile()
+    return
+  }
+  addScript(v)
+}
+
+function addScript(version)
+{
+  var js = document.createElement('script')
+  js.src = 'js/'+version+'/coffee-script.js'
+  document.getElementsByTagName('head')[0].appendChild(js)
+}
+
+function loaded(coffee)
+{
+  compilers[coffee.VERSION] = compiler = coffee()
+  thenCompile()
+}
+
+function thenCompile()
+{
+  if(compiler)
+    setTimeout(compile)
+}
+
+function compile()
+{
+  var
+    Options={}, checkBoxes = popup.getElementsByTagName('input')
+
+  for(var i = checkBoxes.length-1; i>=0; i--)
+  {
+    var cb=checkBoxes[i]
+    Options[cb.name]=cb.checked
+  }
+
+  try{
+    js=compiler.compile(editors.coffee.getValue(), {
+      bare: !Options.bare,
+      header: Options.header
+    })
+    if(Options.minify)
+      js=Minify(js)
+    editors.javascript.setValue(js)
+    editors.javascript.getSession().setUseWrapMode(Options.minify)
+  }
+  catch(e){
+    console.log(e)
+    editors.javascript.setValue('')
+    // error.style.display='block'
+    // error.children[0].innerText=e.message
+    // errPos={x: e.location.first_column, y: e.location.first_line}
+  }
+}
+
+function Minify(code)
+{
+  var ast=UglifyJS.parse(code)
+  ast.figure_out_scope()
+  ast=ast.transform(UglifyJS.Compressor())
+  ast.figure_out_scope()
+  ast.compute_char_frequency()
+  ast.mangle_names()
+  return ast.print_to_string()
 }
 
 }()
