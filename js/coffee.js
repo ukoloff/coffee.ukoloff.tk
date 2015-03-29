@@ -84,12 +84,13 @@ function initError()
 function hideError()
 {
   error.style.display = ''
+  return false
 }
 
 function go2err(){
+  hideError()
   editors.coffee.navigateTo(errPos.y, errPos.x)
   editors.coffee.focus()
-  hideError()
 }
 
 function select()

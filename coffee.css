@@ -84,6 +84,7 @@ pre {
   margin: 1em;
   background: yellow;
   border: 1px solid red;
+  text-align: center;
 }
 
 #error a {
@@ -96,8 +97,4 @@ pre {
 
 #error a:hover {
   color: lime;
-}
-
-#error input {
-  width: 100%;
 }
