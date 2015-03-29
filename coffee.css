@@ -74,3 +74,30 @@ pre {
 #options ul a {
   color: navy;
 }
+
+#error {
+  display: none;
+  position: absolute;
+  z-index: 200;
+  right: 0;
+  top: 0;
+  margin: 1em;
+  background: yellow;
+  border: 1px solid red;
+}
+
+#error a {
+  display: block;
+  background: red;
+  color: black;
+  text-decoration: none;
+  text-align: right;
+}
+
+#error a:hover {
+  color: lime;
+}
+
+#error input {
+  width: 100%;
+}
