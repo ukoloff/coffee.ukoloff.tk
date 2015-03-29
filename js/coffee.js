@@ -88,7 +88,6 @@ function hideError()
 }
 
 function go2err(){
-  hideError()
   editors.coffee.navigateTo(errPos.y, errPos.x)
   editors.coffee.focus()
 }
