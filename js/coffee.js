@@ -162,7 +162,7 @@ function compile()
   {
     editors.javascript.setValue(errorify(e.message))
     error.style.display = 'block'
-    error.children[1].innerText = e.message
+    error.children[1].innerHTML = html(e.message)
     errPos = {
       x: e.location.first_column,
       y: e.location.first_line
@@ -193,6 +193,18 @@ function errorify(msg)
   for(var i = x.length-1; i>=0; i--)
     x[i] = '//# '+x[i]
   return x.join('\n')
+}
+
+var htmls = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;'
+}
+
+function html(s)
+{
+  return String(s).replace(/[&<>"]/g, function(e){return htmls[e]})
 }
 
 }()
