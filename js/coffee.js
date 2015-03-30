@@ -207,4 +207,18 @@ function html(s)
   return String(s).replace(/[&<>"]/g, function(e){return htmls[e]})
 }
 
+// Patch for CoffeeScript 1.9.0+ on Windows
+function objectCreate()
+{
+  if(Object.create) return
+  Object.create = function(proto)
+  {
+    function create(){}
+    create.prototype = proto
+    return new create
+  }
+}
+
+objectCreate()
+
 }()
