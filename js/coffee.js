@@ -81,6 +81,18 @@ function initError()
   error.getElementsByTagName('input')[0].onclick = go2err
 }
 
+function showError(e)
+{
+  editors.javascript.setValue(errorify(e.message))
+  error.style.display = 'block'
+  error.children[1].innerHTML = html(e.message)
+  errPos = e.location ? {
+    x: e.location.first_column,
+    y: e.location.first_line
+  } : null
+  error.getElementsByTagName('input')[0].style.display = errPos ? '' : 'none'
+}
+
 function hideError()
 {
   error.style.display = ''
@@ -160,13 +172,7 @@ function compile()
   }
   catch(e)
   {
-    editors.javascript.setValue(errorify(e.message))
-    error.style.display = 'block'
-    error.children[1].innerHTML = html(e.message)
-    errPos = {
-      x: e.location.first_column,
-      y: e.location.first_line
-    }
+    showError(e)
   }
 }
 
