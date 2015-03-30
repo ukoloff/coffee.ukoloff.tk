@@ -160,7 +160,7 @@ function compile()
   }
   catch(e)
   {
-    editors.javascript.setValue('')
+    editors.javascript.setValue(errorify(e.message))
     error.style.display = 'block'
     error.children[1].innerText = e.message
     errPos = {
@@ -185,6 +185,14 @@ function safeMinify(code)
 {
   try{ return Minify(code) }
   catch(e){ return code }
+}
+
+function errorify(msg)
+{
+  var x = String(msg).split(/\r?\n|\r/)
+  for(var i = x.length-1; i>=0; i--)
+    x[i] = '//# '+x[i]
+  return x.join('\n')
 }
 
 }()
