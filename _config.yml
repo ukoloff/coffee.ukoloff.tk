@@ -1,7 +1,6 @@
 name: Online CoffeeScript compiler & minifier
 encoding: utf-8
 markdown: redcarpet
-highlighter:
 exclude:
   - CNAME
   - README.md
