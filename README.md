@@ -1,6 +1,6 @@
 # coffee
 
-![Build Status](https://gitlab.com/ukoloff/coffee/badges/master/build.svg)
+![Build Status](https://gitlab.com/ukoloff/coffee/badges/gh-pages/build.svg)
 
 Compile (and minify) CoffeeScript in browser
 
