@@ -1,8 +1,12 @@
 # coffee
 
+![Build Status](https://gitlab.com/ukoloff/coffee/badges/master/build.svg)
+
 Compile (and minify) CoffeeScript in browser
 
-[Go ahead!](http://ukoloff.github.io/coffee/) or [here](http://coffee.ukoloff.tk/)
+[Go ahead!](http://ukoloff.github.io/coffee.ukoloff.tk/) or
+[here](http://coffee.ukoloff.tk/) or
+[here](https://ukoloff.gitlab.io/coffee/)...
 
 ## Credits
 
