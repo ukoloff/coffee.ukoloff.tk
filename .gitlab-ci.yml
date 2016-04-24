@@ -1,0 +1,11 @@
+pages:
+  script:
+  - mkdir .public
+  - cp -r * .public
+  - rm -rf .public/build
+  - mv .public public
+  artifacts:
+    paths:
+    - public
+  only:
+  - gh-pages
