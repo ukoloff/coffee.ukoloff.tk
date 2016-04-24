@@ -2,9 +2,10 @@
 
 Compile (and minify) CoffeeScript in browser
 
-[Go ahead!](http://ukoloff.github.io/coffee.ukoloff.tk/) or
-[here](http://coffee.ukoloff.tk/) or
-[here](https://ukoloff.gitlab.io/coffee/)...
+See:
+  - [Here](http://ukoloff.github.io/coffee.ukoloff.tk/),
+  - [Here](http://coffee.ukoloff.tk/)
+  - Or [here](http://ukoloff.gitlab.io/coffee/) ([secure](https://ukoloff.gitlab.io/coffee/))
 
 ## Credits
 
