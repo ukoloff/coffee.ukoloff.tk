@@ -1,4 +1,6 @@
 {
+  "name": "coffee",
+  "private": true,
   "description": "Download & build dependencies",
   "readme": "None",
   "repository": {
