@@ -2,7 +2,11 @@ var
   fs = require('fs'),
   path = require('path'),
   chp = require('child_process'),
-  github = require('github')
+  github = require('github'),
+  paths = [
+    'docs/v1/browser-compiler/coffee-script.js',
+    'extras/coffee-script.js'
+  ]
 
 uglify()
 coffee()
@@ -28,10 +32,10 @@ function coffee()
   var
     tags=[],
     tag,
+    uris = [],
     g = new github({version: '3.0.0'})
 
   g.repos.getTags(merge(src, {per_page: 12}), tagen)
-
 
   function tagen(err, data)
   {
@@ -49,14 +53,26 @@ function coffee()
   function fetchTag()
   {
     if(tags.length<=0) return;
-    g.repos.getContent(merge(src, {path: 'extras/coffee-script.js', ref: tag = tags.shift()}), blob)
+    tag = tags.shift();
+    uris = paths.slice();
+    fetchFile();
+  }
+
+  function fetchFile()
+  {
+    if(!uris.length)
+    {
+      console.error('Cannot load tag', tag);
+      return;
+    }
+    g.repos.getContent(merge(src, {path: uris.shift(), ref: tag}), blob)
   }
 
   function blob(err, data)
   {
     if(err)
     {
-      console.log('Oops! :-(', err.message)
+      fetchFile()
       return
     }
     var x=data.content
