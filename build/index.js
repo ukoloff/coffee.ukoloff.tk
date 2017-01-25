@@ -35,7 +35,7 @@ function coffee()
     uris = [],
     g = new github({version: '3.0.0'})
 
-  g.repos.getTags(merge(src, {per_page: 12}), tagen)
+  g.repos.getTags(merge(src, {per_page: 21}), tagen)
 
   function tagen(err, data)
   {
