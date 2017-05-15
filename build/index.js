@@ -44,10 +44,20 @@ function coffee()
       console.log('Oops! :-(', err.message)
       return
     }
-    tags = data.map(function(x){return x.name})
+    tags = data.map(nameProp).filter(skipAlpha)
     fs.writeFileSync(path.join(__dirname, '..', 'js', 'menu.js'),
       "define("+JSON.stringify(tags, null, '  ')+')\n')
     fetchTag()
+  }
+
+  function nameProp(x)
+  {
+    return x.name
+  }
+
+  function skipAlpha(s)
+  {
+    return !/[a-z]/i.test(s)
   }
 
   function fetchTag()
