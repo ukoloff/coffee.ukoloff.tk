@@ -11,16 +11,6 @@ body {
   width: 50%;
 }
 
-#coffee {
-  position: absolute;
-  left: 0;
-}
-
-#javascript {
-  position: absolute;
-  right: 0;
-}
-
 pre {
   margin: 0;
   padding: 0;
@@ -31,7 +21,6 @@ pre {
 #splitter {
   z-index: 8;
   position: absolute;
-  left: 50%;
   top: 0;
   bottom: 0;
   border: 1px solid gray;

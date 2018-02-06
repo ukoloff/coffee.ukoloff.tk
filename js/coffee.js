@@ -16,6 +16,7 @@ this.define = function(vs)
 function boot()
 {
   reDefine()
+  splitter(50)
   initEditors()
   initPopup()
   initError()
@@ -32,7 +33,7 @@ function initEditors()
   var z = document.getElementsByTagName('pre')
   for(var i = z.length-1; i>=0; i--)
   {
-    var id = z[i].parentNode.id
+    var id = z[i].id
     var x = editors[id] = ace.edit(z[i])
     x.setTheme("ace/theme/github")
     x.getSession().setMode("ace/mode/"+id)
@@ -201,6 +202,26 @@ function errorify(msg)
   return x.join('\n')
 }
 
+function splitter(percent) {
+  var z = document.getElementById('splitter')
+  z.onclick = function(e) {
+    var x0 = e.x
+
+  }
+
+  !function set(percent) {
+    percent += '%'
+    z.style.left = percent
+    divs = z.parentNode.children
+    style = divs[0].style
+    style.left = 0
+    style.width = percent
+    style = divs[1].style
+    style.left = percent
+    style.right = 0
+  }(percent)
+}
+
 var htmls = {
   '&': '&amp;',
   '<': '&lt;',
@@ -214,7 +235,7 @@ function html(s)
 }
 
 // Patch for CoffeeScript 1.9.0+ on Windows
-function objectCreate()
+!function()
 {
   if(Object.create) return
   Object.create = function(proto)
@@ -223,8 +244,6 @@ function objectCreate()
     create.prototype = proto
     return new create
   }
-}
-
-objectCreate()
+}()
 
 }()
