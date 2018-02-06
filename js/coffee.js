@@ -208,11 +208,19 @@ function splitter(percent) {
   z.onmousedown = function() {
     if(z.className)
       return
-    var preserve = {move: move, down: swap}
+    var debounce, preserve = {move: move, down: swap}
     setTimeout(swap)
 
     function move(e) {
-      moveTo(Math.min(90, Math.max(10, Math.round((e || window.event).clientX / z.offsetParent.clientWidth * 100))))
+      if (!debounce)
+        setTimeout(fire, 100)
+      debounce = [(e || window.event).clientX]
+      return false
+
+      function fire() {
+        moveTo(Math.min(90, Math.max(10, Math.round(debounce[0] / z.offsetParent.clientWidth * 100))))
+        debounce = false
+      }
     }
 
     function swap(e) {
