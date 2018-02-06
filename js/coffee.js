@@ -207,10 +207,10 @@ function splitter(percent) {
   moveTo(percent)
   z.onclick = function() {
     var preserve = {move: move, up: swap}
-    swap()
+    setTimeout(swap)
 
     function move(e) {
-      moveTo(Math.min(90, Math.max(10, Math.round(e.x / z.offsetParent.clientWidth * 100))))
+      moveTo(Math.min(90, Math.max(10, Math.round(e.clientX / z.offsetParent.clientWidth * 100))))
     }
 
     function swap(e) {
@@ -221,20 +221,21 @@ function splitter(percent) {
       }
       return false
     }
-    // return false
+    return false
   }
 
   function moveTo(percent) {
-    percent += '%'
-    z.style.left = percent
+    z.style.left = percent + '%'
     divs = z.parentNode.children
     style = divs[0].style
     style.left = 0
-    style.width = percent
+    style.width = percent + '%'
     style = divs[1].style
-    style.left = percent
+    style.width = (100-percent) + '%'
     style.right = 0
-    // window.dispatchEvent(new Event('resize'))
+    for(var k in editors) {
+      editors[k].resize()
+    }
   }
 }
 
