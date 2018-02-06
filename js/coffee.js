@@ -204,12 +204,27 @@ function errorify(msg)
 
 function splitter(percent) {
   var z = document.getElementById('splitter')
-  z.onclick = function(e) {
-    var x0 = e.x
+  moveTo(percent)
+  z.onclick = function() {
+    var preserve = {move: move, up: swap}
+    swap()
 
+    function move(e) {
+      moveTo(Math.min(90, Math.max(10, Math.round(e.x / z.offsetParent.clientWidth * 100))))
+    }
+
+    function swap(e) {
+      for (var k in preserve) {
+        var v = preserve[k], name = "onmouse" + k
+        preserve[k] = document[name]
+        document[name] = v
+      }
+      return false
+    }
+    // return false
   }
 
-  !function set(percent) {
+  function moveTo(percent) {
     percent += '%'
     z.style.left = percent
     divs = z.parentNode.children
@@ -219,7 +234,8 @@ function splitter(percent) {
     style = divs[1].style
     style.left = percent
     style.right = 0
-  }(percent)
+    // window.dispatchEvent(new Event('resize'))
+  }
 }
 
 var htmls = {
