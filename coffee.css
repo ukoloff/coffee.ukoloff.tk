@@ -4,11 +4,10 @@ body {
   color: black;
 }
 
-.half {
+body > div {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 50%;
 }
 
 pre {
@@ -20,9 +19,6 @@ pre {
 
 #splitter {
   z-index: 8;
-  position: absolute;
-  top: 0;
-  bottom: 0;
   border: 2px solid gray;
   cursor: col-resize;
 }
