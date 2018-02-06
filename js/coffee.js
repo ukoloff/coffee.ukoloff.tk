@@ -166,7 +166,7 @@ function compile()
       header: Options.header
     })
     if(Options.minify)
-      js = safeMinify(js)
+      js = UglifyJS.minify(js).code || js
     editors.javascript.setValue(js)
     editors.javascript.getSession().setUseWrapMode(Options.minify)
   }
@@ -174,23 +174,6 @@ function compile()
   {
     showError(e)
   }
-}
-
-function Minify(code)
-{
-  var ast = UglifyJS.parse(code)
-  ast.figure_out_scope()
-  ast = ast.transform(UglifyJS.Compressor())
-  ast.figure_out_scope()
-  ast.compute_char_frequency()
-  ast.mangle_names()
-  return ast.print_to_string()
-}
-
-function safeMinify(code)
-{
-  try{ return Minify(code) }
-  catch(e){ return code }
 }
 
 function errorify(msg)

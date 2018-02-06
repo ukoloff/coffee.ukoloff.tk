@@ -18,8 +18,8 @@ function uglify()
 {
   console.log('Building UglifyJS...')
   var u=chp.spawn(process.argv[0],
-    ['uglifyjs', '--self', '-mc'],
-    {cwd: path.join(__dirname, 'node_modules/uglify-js/bin')})
+    'uglifyjs --self -mc --ie8'.split(/\s+/),
+    {cwd: path.join(__dirname, 'node_modules/uglify-es/bin')})
   .on('error', function(e){console.log('Error:', e.message)})
 
   u.stdout.pipe(fs.createWriteStream(path.join(__dirname, '../js/uglify.js')))

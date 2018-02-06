@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "github": "^0.2.2",
-    "uglify-js": "^2.4.15"
+    "uglify-es": "^3.3.9"
   }
 }
