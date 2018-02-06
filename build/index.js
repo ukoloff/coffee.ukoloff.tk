@@ -3,10 +3,13 @@ var
   path = require('path'),
   chp = require('child_process'),
   github = require('github'),
-  paths = [
+
+  paths = [[
     'docs/v1/browser-compiler/coffee-script.js',
     'extras/coffee-script.js'
-  ]
+  ], [
+    'docs/v2/browser-compiler/coffeescript.js'
+  ]]
 
 uglify()
 coffee()
@@ -35,7 +38,7 @@ function coffee()
     uris = [],
     g = new github({version: '3.0.0'})
 
-  g.repos.getTags(merge(src, {per_page: 27}), tagen)
+  g.repos.getTags(merge(src, {per_page: 50}), tagen)
 
   function tagen(err, data)
   {
@@ -64,7 +67,7 @@ function coffee()
   {
     if(tags.length<=0) return;
     tag = tags.shift();
-    uris = paths.slice();
+    uris = paths[Number(tag.split(/\D/, 1)[0] > 1)].slice();
     fetchFile();
   }
 
