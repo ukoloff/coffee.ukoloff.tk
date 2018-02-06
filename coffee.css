@@ -23,12 +23,16 @@ pre {
   position: absolute;
   top: 0;
   bottom: 0;
-  border: 1px solid gray;
+  border: 2px solid gray;
   cursor: col-resize;
 }
 
 #splitter:hover {
-  border: 1px solid blueviolet;
+  border: 2px solid blueviolet;
+}
+
+#splitter.on {
+  border: 2px solid red;
 }
 
 #options {

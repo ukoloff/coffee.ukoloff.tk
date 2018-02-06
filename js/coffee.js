@@ -205,15 +205,18 @@ function errorify(msg)
 function splitter(percent) {
   var z = document.getElementById('splitter')
   moveTo(percent)
-  z.onclick = function() {
-    var preserve = {move: move, up: swap}
+  z.onmousedown = function() {
+    if(z.className)
+      return
+    var preserve = {move: move, down: swap}
     setTimeout(swap)
 
     function move(e) {
-      moveTo(Math.min(90, Math.max(10, Math.round(e.clientX / z.offsetParent.clientWidth * 100))))
+      moveTo(Math.min(90, Math.max(10, Math.round((e || window.event).clientX / z.offsetParent.clientWidth * 100))))
     }
 
     function swap(e) {
+      z.className = z.className ? '' : 'on';
       for (var k in preserve) {
         var v = preserve[k], name = "onmouse" + k
         preserve[k] = document[name]
