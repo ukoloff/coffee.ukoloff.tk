@@ -28,6 +28,20 @@ pre {
   height: 100%;
 }
 
+#splitter {
+  z-index: 8;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  border: 1px solid gray;
+  cursor: col-resize;
+}
+
+#splitter:hover {
+  border: 1px solid blueviolet;
+}
+
 #options {
   position: absolute;
   z-index: 10;
