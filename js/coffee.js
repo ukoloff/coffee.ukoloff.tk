@@ -196,18 +196,23 @@ function html(s)
   return String(s).replace(/[&<>"]/g, function(e){return htmls[e]})
 }
 
-// Patch for CoffeeScript 1.9.0+ on Windows
-function objectCreate()
-{
-  if(Object.create) return
-  Object.create = function(proto)
-  {
+// ES6: Patches for CoffeeScript 1.9.0+ on Windows
+if(!Object.create)
+  Object.create = function(proto) {
     function create(){}
     create.prototype = proto
     return new create
   }
-}
 
-objectCreate()
+if(!Object.assign)
+  Object.assign = function(target) {
+    var target = Object(target)
+    for (var i = 1; i <= arguments.length; i++) {
+      var src = Object(arguments[i])
+      for (var k in src) 
+        target[k] = src[k]
+    }
+    return target
+  }
 
 }()
