@@ -24,6 +24,7 @@ this.define = function(vs)
 function boot()
 {
   reDefine()
+  splitter(50)
   initEditors()
   initPopup()
   initError()
@@ -41,7 +42,7 @@ function initEditors()
   for(var i = z.length-1; i>=0; i--)
   {
     var id = z[i].id
-    var x = editors[id] = ace.edit(id)
+    var x = editors[id] = ace.edit(z[i])
     x.setTheme("ace/theme/github")
     x.getSession().setMode("ace/mode/"+id)
     x.getSession().setUseWorker(false)
@@ -190,6 +191,54 @@ function errorify(msg)
   for(var i = x.length-1; i>=0; i--)
     x[i] = '//# '+x[i]
   return x.join('\n')
+}
+
+function splitter(percent) {
+  var z = document.getElementById('splitter')
+  moveTo(percent)
+  z.onmousedown = function() {
+    if(z.className)
+      return
+    var debounce, preserve = {move: move, down: swap}
+    setTimeout(swap)
+
+    function move(e) {
+      if (!debounce)
+        setTimeout(fire, 100)
+      debounce = [(e || window.event).clientX]
+      return false
+
+      function fire() {
+        moveTo(Math.min(90, Math.max(10, Math.round(debounce[0] / z.offsetParent.clientWidth * 100))))
+        debounce = false
+      }
+    }
+
+    function swap(e) {
+      z.className = z.className ? '' : 'on';
+      for (var k in preserve) {
+        var v = preserve[k], name = "onmouse" + k
+        preserve[k] = document[name]
+        document[name] = v
+      }
+      return false
+    }
+    return false
+  }
+
+  function moveTo(percent) {
+    z.style.left = percent + '%'
+    divs = z.parentNode.children
+    style = divs[0].style
+    style.left = 0
+    style.width = percent + '%'
+    style = divs[1].style
+    style.width = (100-percent) + '%'
+    style.right = 0
+    for(var k in editors) {
+      editors[k].resize()
+    }
+  }
 }
 
 var htmls = {

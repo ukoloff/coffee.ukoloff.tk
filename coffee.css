@@ -4,29 +4,38 @@ body {
   color: black;
 }
 
-pre {
-  margin: 0;
+body > div {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 50%;
 }
 
-#coffee {
-  position: absolute;
-  left: 0;
+pre {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
 }
 
-#javascript {
-  position: absolute;
-  right: 0;
+#splitter {
+  z-index: 8;
+  border: 2px solid gray;
+  cursor: col-resize;
+}
+
+#splitter:hover {
+  border: 2px solid blueviolet;
+}
+
+#splitter.on {
+  border: 2px solid red;
 }
 
 #options {
   position: absolute;
   z-index: 10;
   top: 0;
-  left: 50%;
+  left: -1.6ex;
 }
 
 #options > input {
