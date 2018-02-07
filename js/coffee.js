@@ -5,6 +5,14 @@ var
   editors = {},
   popup, error, errPos,
   compiler, compilers = {}
+  minifyOptions = {    
+    parse: {
+      bare_returns: true
+    },
+    output: {
+      max_line_len: 72
+    }
+  }
 
 setTimeout(boot, 100)
 
@@ -166,7 +174,7 @@ function compile()
       header: Options.header
     })
     if(Options.minify)
-      js = UglifyJS.minify(js).code || js
+      js = UglifyJS.minify(js, minifyOptions).code || js
     editors.javascript.setValue(js)
     editors.javascript.getSession().setUseWrapMode(Options.minify)
   }
