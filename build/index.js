@@ -18,7 +18,7 @@ function uglify()
 {
   console.log('Building UglifyJS...')
   var u=chp.spawn(process.argv[0],
-    'uglifyjs --self -mc --ie8'.split(/\s+/),
+    'uglifyjs --self -mc'.split(/\s+/),
     {cwd: path.join(__dirname, 'node_modules/uglify-es/bin')})
   .on('error', function(e){console.log('Error:', e.message)})
 
