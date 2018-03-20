@@ -1,0 +1,12 @@
+{
+  "name": "coffee",
+  "alias": "kofe.now.sh",
+  "files": [
+    "ace",
+    "js",
+    "index.html",
+    "coffee.css",
+    "robots.txt",
+    "favicon.ico"
+  ]
+}
