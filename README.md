@@ -5,7 +5,8 @@ Compile (and minify) CoffeeScript in browser
 See:
   - [Here][@github] ([mirror][@rawgit])
   - [Here][@tk]
-  - Or [here][@gitlab] ([secure][@gitlab!])
+  - [here][@gitlab] ([secure][@gitlab!])
+  - or [here][@now]
 
 ## Bugs
 
@@ -28,3 +29,4 @@ See:
 [@tk]: http://coffee.ukoloff.tk/
 [@gitlab]: http://ukoloff.gitlab.io/coffee/
 [@gitlab!]: https://ukoloff.gitlab.io/coffee/
+[@now]: https://coffee-ukoloff.now.sh/
