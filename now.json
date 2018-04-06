@@ -1,5 +1,6 @@
 {
   "name": "coffee",
+  "public": true,
   "alias": "kofe.now.sh",
   "files": [
     "ace",
