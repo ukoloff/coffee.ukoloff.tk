@@ -29,4 +29,4 @@ See:
 [@tk]: http://coffee.ukoloff.tk/
 [@gitlab]: http://ukoloff.gitlab.io/coffee/
 [@gitlab!]: https://ukoloff.gitlab.io/coffee/
-[@now]: https://coffee-ukoloff.now.sh/
+[@now]: https://kofe.now.sh/
