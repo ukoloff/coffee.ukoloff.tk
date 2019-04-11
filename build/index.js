@@ -8,6 +8,8 @@ var
     'docs/v1/browser-compiler/coffee-script.js',
     'extras/coffee-script.js'
   ], [
+    // 'docs/v2/browser-compiler-modern/coffeescript.js',
+    'docs/v2/browser-compiler-legacy/coffeescript.js',
     'docs/v2/browser-compiler/coffeescript.js'
   ]]
 
@@ -90,7 +92,7 @@ function coffee()
     }
     var x=data.content
     if('base64'==data.encoding)
-      x=new Buffer(x, 'base64').toString('ascii')
+      x=Buffer.from(x, 'base64').toString('ascii')
     var name=path.join(__dirname, '..', 'js', tag, 'coffee-script.js')
     console.log(name, x.length)
     try{fs.mkdirSync(path.dirname(name))}catch(e){}
