@@ -10,6 +10,10 @@ body > div {
   bottom: 0;
 }
 
+.hide {
+  display: none;
+}
+
 pre {
   margin: 0;
   padding: 0;

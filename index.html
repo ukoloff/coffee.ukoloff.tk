@@ -25,6 +25,8 @@ console.log "Hello, #{who = 'world'}!"
 <input type='button' value='&laquo;' title='Show options'>
 <div id='popup'>
   <a href='#' id='close' title='Hide options'>&times;</a>
+  <label><input type='radio' name='lang' value='cs'> CoffeeScript</label>
+  <label><input type='radio' name='lang' value='ls'> LiveScript</label>
   <select title='Select Coffee Script version'></select>
   <label><input type='checkbox' name='bare'> (){...}()</label>
   <label><input type='checkbox' name='header' checked> Version</label>
@@ -32,11 +34,15 @@ console.log "Hello, #{who = 'world'}!"
   <ul title='Open link in a new window'>
     <li><a href='https://github.com/ukoloff/coffee'
       target='_blank'>Source @ GitHub</a></li>
-    <li><a href='http://coffeescript.org/'
+    <li class='!hide'><a href='https://coffeescript.org'
       target='_blank'>Coffee Script</a></li>
-    <li><a href='https://github.com/jashkenas/coffeescript'
+    <li class='!hide'><a href='https://github.com/jashkenas/coffeescript'
       target='_blank'>Coffee @ GitHub</a></li>
-  </ul>
+    <li class='hide'><a href='http://livescript.net'
+      target='_blank'>Coffee Script</a></li>
+    <li class='hide'><a href='https://github.com/gkz/LiveScript'
+      target='_blank'>Coffee @ GitHub</a></li>
+    </ul>
 </div>
 </div>
 
