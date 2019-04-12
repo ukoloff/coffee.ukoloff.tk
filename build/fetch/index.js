@@ -1,10 +1,15 @@
 const fs = require('fs')
 const path = require('path')
+const https = require('https')
 const fetch = require('node-fetch')
 
 const repos = ['jashkenas/coffeescript', 'gkz/LiveScript']
 
 const root = path.join(__dirname, '../../js')
+
+// https://stackoverflow.com/a/40639733
+https.globalAgent.maxSockets = 5
+https.globalAgent.keepAlive = true
 
 Promise.all(repos.map(listTags))
 .then(buildList)
