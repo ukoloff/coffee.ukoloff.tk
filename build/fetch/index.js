@@ -1,10 +1,15 @@
+const fs = require('fs')
+const path = require('path')
 const fetch = require('node-fetch')
 
 const repos = ['jashkenas/coffeescript', 'gkz/LiveScript']
 
+const root = path.join(__dirname, '../../js')
+
 Promise.all(repos.map(listTags))
 .then(buildList)
-// .catch(Error)
+.then(reportCounts)
+.catch(Error)
 
 function listTags(repo) {
   return fetch(`https://api.github.com/repos/${repo}/git/refs/tags`)
@@ -20,7 +25,11 @@ function buildList(arr) {
   var res = zip(repos.map(langName), arr.map(repoTags))
   .reduce((obj, [k,v]) =>  (obj[k] = v, obj), {})
 
-  console.log(JSON.stringify(res))
+  fs.writeFile(path.join(root, 'versions.js'),
+    'var versions = ' + JSON.stringify(res),
+    x => x)
+
+  return res
 }
 
 function repoTags(tags) {
@@ -46,3 +55,8 @@ function zip(...arrs) {
   }
 }
 
+function reportCounts(res) {
+  for (k in res) {
+    console.log(`${k}:\t${res[k].length}`)
+  }
+}
