@@ -4,7 +4,7 @@ const repos = ['jashkenas/coffeescript', 'gkz/LiveScript']
 
 Promise.all(repos.map(listTags))
 .then(buildList)
-.catch(Error)
+// .catch(Error)
 
 function listTags(repo) {
   return fetch(`https://api.github.com/repos/${repo}/git/refs/tags`)
@@ -17,8 +17,9 @@ function Error(error) {
 }
 
 function buildList(arr) {
-  var res = {}
-  zip(repos.map(langName), arr.map(repoTags)).forEach(([k, v]) => res[k] = v)
+  var res = zip(repos.map(langName), arr.map(repoTags))
+  .reduce((obj, [k,v]) =>  (obj[k] = v, obj), {})
+
   console.log(JSON.stringify(res))
 }
 
