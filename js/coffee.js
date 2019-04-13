@@ -5,7 +5,7 @@ var
   editors = {},
   popup, error, errPos,
   compiler, compilers = {}
-  minifyOptions = {    
+  minifyOptions = {
     parse: {
       bare_returns: true
     },
@@ -18,7 +18,7 @@ setTimeout(boot, 100)
 
 this.define = function(vs)
 {
-  versions = vs
+  versions = vs.coffeescript
 }
 
 function boot()
@@ -266,7 +266,7 @@ if(!Object.assign)
     var target = Object(target)
     for (var i = 1; i <= arguments.length; i++) {
       var src = Object(arguments[i])
-      for (var k in src) 
+      for (var k in src)
         target[k] = src[k]
     }
     return target
