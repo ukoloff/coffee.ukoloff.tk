@@ -16,18 +16,15 @@ if (!module.parent) main()
 
 function save(bundle) {
   return Promise.all(bundle.map(ensureTag))
-    // .then(x => (console.log(yaml.safeDump(x)), x))
     .then(results => results.filter(Array.isArray))
     .then(dumpMissing)
 }
 
 function dumpMissing(bundle) {
-  console.log('...')
   if (!bundle.length) return
   console.log(yaml.safeDump({
     Missing: bundle.map(rec => `${rec[0].repo}@${rec[1]}`)
   }))
-
 }
 
 function main() {
@@ -39,12 +36,10 @@ function main() {
 }
 
 function ensureTag(tagRec) {
-  // console.log(tagRec)
   const dst = path.join(root, tagRec[0].repo, tagRec[1], tagRec[0].repo + '.js')
   return stat(dst)
     .then(_ => true)
     .catch(_ => Promise.resolve([tagRec, dst]).then(loadTag))
-    // .then(x => console.log('TAG', x))
 }
 
 function loadTag([tagRec, dst]) {
@@ -52,7 +47,6 @@ function loadTag([tagRec, dst]) {
 
   return makeDir(path.dirname(dst))
     .then(_ => Promise.all(tagRec[0].paths.map(fetchVariant)))
-    // .then(_ => console.log(tagRec[1], count))
     .then(_ => count ? null : tagRec)
 
   function fetchVariant(fragment) {
@@ -69,7 +63,7 @@ function loadTag([tagRec, dst]) {
       console.log('Writing:', `${tagRec[0].repo}@${tagRec[1]}`)
       req.body.pipe(fs.createWriteStream(dst))
         .on('error', reject)
-        .on('end', _ => resolve())
+        .on('finish', resolve)
     }
   }
 }

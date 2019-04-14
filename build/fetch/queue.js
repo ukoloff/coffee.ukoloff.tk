@@ -35,7 +35,7 @@ function queue(count) {
 
   function dec() {
     if (queue.length) {
-      queue.pop()()
+      queue.shift()()
     } else {
       count++
     }
