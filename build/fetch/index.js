@@ -39,7 +39,7 @@ function listTags(repo) {
 }
 
 function Error(error) {
-  console.log(`# ERROR: ${error}!`)
+  console.log('# ERROR:', error)
   process.exit(1)
 }
 
@@ -85,7 +85,7 @@ function zipList(arr) {
 }
 
 function saveList(arr) {
-  promisify(fs.writeFile)(
+  return promisify(fs.writeFile)(
     path.join(__dirname, 'tags.yml'),
     yaml.dump(arr))
     .then(_ => arr)

@@ -16,15 +16,7 @@ if (!module.parent) main()
 
 function save(bundle) {
   return Promise.all(bundle.map(ensureTag))
-    .then(results => results.filter(Array.isArray))
-    .then(dumpMissing)
-}
-
-function dumpMissing(bundle) {
-  if (!bundle.length) return
-  console.log(yaml.safeDump({
-    Missing: bundle.map(rec => `${rec[0].repo}@${rec[1]}`)
-  }))
+    .then(Report)
 }
 
 function main() {
@@ -42,14 +34,16 @@ function ensureTag(tagRec) {
     .catch(_ => Promise.resolve([tagRec, dst]).then(loadTag))
 }
 
-var newCount = 0
+var saved = [], missing = []
 
 function loadTag([tagRec, dst]) {
+
   var count = 0
 
   return makeDir(path.dirname(dst))
     .then(_ => Promise.all(tagRec[0].paths.map(fetchVariant)))
-    .then(_ => count ? null : tagRec)
+    .then(_ => (count ? saved : missing).push(`${tagRec[0].repo}@${tagRec[1]}`))
+    .then(_ => process.stdout.write('.'))
 
   function fetchVariant(fragment) {
     return queue(`https://github.com/${tagRec[0].key}/raw/${tagRec[1]}/${fragment}`)
@@ -62,11 +56,17 @@ function loadTag([tagRec, dst]) {
     return new Promise(executor)
 
     function executor(resolve, reject) {
-      if (!newCount++) console.log('Writing:')
-      console.log(`  - ${tagRec[0].repo}@${tagRec[1]}`)
       req.body.pipe(fs.createWriteStream(dst))
         .on('error', reject)
         .on('finish', resolve)
     }
   }
+}
+
+function Report() {
+  console.log()
+  if (saved.length) console.log('Found:')
+  saved.forEach(v => console.log('  -', v))
+  if (missing.length) console.log('Missing:')
+  missing.forEach(v => console.log('  -', v))
 }
