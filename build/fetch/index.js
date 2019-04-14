@@ -5,16 +5,14 @@ const https = require('https')
 const fetch = require('node-fetch')
 const yaml = require('js-yaml')
 
-var sources = require('./sources')
-var promisify = require('./promisify')
+const save = require('./save')
+const promisify = require('./promisify')
 
-const root = path.join(__dirname, '../../js')
+var sources
 
-// https://stackoverflow.com/a/40639733
-https.globalAgent.maxSockets = 5
-https.globalAgent.keepAlive = true
-
-sources
+promisify(fs.readFile)(path.join(__dirname, 'sources.yml'))
+  .then(yaml.safeLoad)
+  .then(massageSources)
   .then(src => sources = src)
   .then(src => Promise.all(src.map(listTags)))
   .then(arr => zip(sources, arr.map(repoTags)))
@@ -22,7 +20,20 @@ sources
   .then(reportCounts)
   .then(zipList)
   .then(saveList)
+  .then(save)
   .catch(Error)
+
+function massageSources(rec) {
+  return Object.keys(rec).map(repo)
+  function repo(key) {
+    return {
+      key,
+      repo: key.replace(/[^]*\//, '').toLowerCase(),
+      paths: rec[key],
+    }
+  }
+}
+
 
 function listTags(repo) {
   return fetch(`https://api.github.com/repos/${repo.key}/git/refs/tags`)
@@ -37,7 +48,7 @@ function Error(error) {
 function writeVersions(arr) {
   var rec = arr.reduce((obj, [k, v]) => (obj[k.repo] = v, obj), {})
 
-  fs.writeFile(path.join(root, 'versions.js'),
+  fs.writeFile(path.join(save.root, 'versions.js'),
     'define(' + JSON.stringify(rec, null, '  ') + ')',
     x => x)
 
