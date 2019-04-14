@@ -42,6 +42,8 @@ function ensureTag(tagRec) {
     .catch(_ => Promise.resolve([tagRec, dst]).then(loadTag))
 }
 
+var newCount = 0
+
 function loadTag([tagRec, dst]) {
   var count = 0
 
@@ -60,7 +62,8 @@ function loadTag([tagRec, dst]) {
     return new Promise(executor)
 
     function executor(resolve, reject) {
-      console.log('Writing:', `${tagRec[0].repo}@${tagRec[1]}`)
+      if (!newCount++) console.log('Writing:')
+      console.log(`  - ${tagRec[0].repo}@${tagRec[1]}`)
       req.body.pipe(fs.createWriteStream(dst))
         .on('error', reject)
         .on('finish', resolve)
