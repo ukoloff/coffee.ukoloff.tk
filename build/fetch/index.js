@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const https = require('https')
 
 const fetch = require('node-fetch')
 const yaml = require('js-yaml')
@@ -33,7 +32,6 @@ function massageSources(rec) {
     }
   }
 }
-
 
 function listTags(repo) {
   return fetch(`https://api.github.com/repos/${repo.key}/git/refs/tags`)

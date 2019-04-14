@@ -1,14 +1,75 @@
 const fs = require('fs')
 const path = require('path')
-const https = require('https')
+
+const yaml = require('js-yaml')
+const makeDir = require('make-dir')
+
+const promisify = require('./promisify')
+const queue = require('./queue')(10)
 
 module.exports = save
 const root = save.root = path.join(__dirname, '../../js')
 
-// https://stackoverflow.com/a/40639733
-https.globalAgent.maxSockets = 5
-https.globalAgent.keepAlive = true
+const stat = promisify(fs.stat)
+
+if (!module.parent) main()
 
 function save(bundle) {
+  return Promise.all(bundle.map(ensureTag))
+    // .then(x => (console.log(yaml.safeDump(x)), x))
+    .then(results => results.filter(Array.isArray))
+    .then(dumpMissing)
+}
 
+function dumpMissing(bundle) {
+  console.log('...')
+  if (!bundle.length) return
+  console.log(yaml.safeDump({
+    Missing: bundle.map(rec => `${rec[0].repo}@${rec[1]}`)
+  }))
+
+}
+
+function main() {
+  promisify(fs.readFile)(path.join(__dirname, 'tags.yml'))
+    .then(yaml.safeLoad)
+    // .then(bundle => ensureTag(bundle[50]))
+    .then(save)
+    .catch(error => console.log('ERROR:', error))
+}
+
+function ensureTag(tagRec) {
+  // console.log(tagRec)
+  const dst = path.join(root, tagRec[0].repo, tagRec[1], tagRec[0].repo + '.js')
+  return stat(dst)
+    .then(_ => true)
+    .catch(_ => Promise.resolve([tagRec, dst]).then(loadTag))
+    // .then(x => console.log('TAG', x))
+}
+
+function loadTag([tagRec, dst]) {
+  var count = 0
+
+  return makeDir(path.dirname(dst))
+    .then(_ => Promise.all(tagRec[0].paths.map(fetchVariant)))
+    // .then(_ => console.log(tagRec[1], count))
+    .then(_ => count ? null : tagRec)
+
+  function fetchVariant(fragment) {
+    return queue(`https://github.com/${tagRec[0].key}/raw/${tagRec[1]}/${fragment}`)
+      .then(req => req.ok ? trySave(req) : false, _ => false)
+  }
+
+  function trySave(req) {
+    if (count++) return
+
+    return new Promise(executor)
+
+    function executor(resolve, reject) {
+      console.log('Writing:', `${tagRec[0].repo}@${tagRec[1]}`)
+      req.body.pipe(fs.createWriteStream(dst))
+        .on('error', reject)
+        .on('end', _ => resolve())
+    }
+  }
 }
