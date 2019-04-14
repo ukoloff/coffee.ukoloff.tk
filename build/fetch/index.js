@@ -7,6 +7,8 @@ const yaml = require('js-yaml')
 const save = require('./save')
 const promisify = require('./promisify')
 
+require('./uglify')
+
 var sources
 
 promisify(fs.readFile)(path.join(__dirname, 'sources.yml'))

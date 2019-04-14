@@ -12,6 +12,7 @@
     "js-yaml": "^3.13.1",
     "make-dir": "^3.0.0",
     "node-fetch": "^2.3.0",
+    "npm-run": "^5.0.1",
     "uglify-es": "^3.3.9"
   }
 }
