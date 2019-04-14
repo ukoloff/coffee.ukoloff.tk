@@ -15,31 +15,23 @@ https.globalAgent.maxSockets = 5
 https.globalAgent.keepAlive = true
 
 sources
-  .then(fetchTags)
-  .then(buildList)
+  .then(src => sources = src)
+  .then(src => Promise.all(src.map(listTags)))
+  .then(arr => zip(sources, arr.map(repoTags)))
   .then(writeVersions)
   .then(reportCounts)
   .then(zipList)
   .then(saveList)
   .catch(Error)
 
-function fetchTags(src) {
-  sources = src
-  return Promise.all(src.map(rec => listTags(rec.key)))
-}
-
-function listTags(key) {
-  return fetch(`https://api.github.com/repos/${key}/git/refs/tags`)
+function listTags(repo) {
+  return fetch(`https://api.github.com/repos/${repo.key}/git/refs/tags`)
     .then(x => x.json())
 }
 
 function Error(error) {
   console.log(`# ERROR: ${error}!`)
   process.exit(1)
-}
-
-function buildList(arr) {
-  return zip(sources, arr.map(repoTags))
 }
 
 function writeVersions(arr) {
