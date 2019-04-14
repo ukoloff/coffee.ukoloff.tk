@@ -15,11 +15,11 @@ promisify(fs.readFile)(path.join(__dirname, 'sources.yml'))
   .then(src => sources = src)
   .then(src => Promise.all(src.map(listTags)))
   .then(arr => zip(sources, arr.map(repoTags)))
-  .then(writeVersions)
   .then(reportCounts)
   .then(zipList)
   .then(saveList)
   .then(save)
+  .then(writeVersions)
   .catch(Error)
 
 function massageSources(rec) {
@@ -41,16 +41,6 @@ function listTags(repo) {
 function Error(error) {
   console.log('# ERROR:', error)
   process.exit(1)
-}
-
-function writeVersions(arr) {
-  var rec = arr.reduce((obj, [k, v]) => (obj[k.repo] = v, obj), {})
-
-  fs.writeFile(path.join(save.root, 'versions.js'),
-    'define(' + JSON.stringify(rec, null, '  ') + ')',
-    x => x)
-
-  return arr
 }
 
 function repoTags(tags) {
@@ -89,4 +79,18 @@ function saveList(arr) {
     path.join(__dirname, 'tags.yml'),
     yaml.dump(arr))
     .then(_ => arr)
+}
+
+function writeVersions(bundle) {
+  var rec = bundle
+    .filter(rec => 0 !== rec[2])
+    .reduce((obj, rec) =>
+      ((obj[rec[0].repo] || (obj[rec[0].repo] = [])).push(rec[1]), obj), {})
+  // var rec = arr.reduce((obj, [k, v]) => (obj[k.repo] = v, obj), {})
+
+  fs.writeFile(path.join(save.root, 'versions.js'),
+    'define(' + JSON.stringify(rec, null, '  ') + ')',
+    x => x)
+
+  return bundle
 }

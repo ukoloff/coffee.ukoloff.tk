@@ -15,7 +15,10 @@ const stat = promisify(fs.stat)
 if (!module.parent) main()
 
 function save(bundle) {
+  process.stdout.write('# ')
+
   return Promise.all(bundle.map(ensureTag))
+    .then(_ => bundle)
     .then(Report)
 }
 
@@ -34,16 +37,13 @@ function ensureTag(tagRec) {
     .catch(_ => Promise.resolve([tagRec, dst]).then(loadTag))
 }
 
-var saved = [], missing = []
-
 function loadTag([tagRec, dst]) {
 
-  var count = 0
+  tagRec[2] = 0
 
   return makeDir(path.dirname(dst))
     .then(_ => Promise.all(tagRec[0].paths.map(fetchVariant)))
-    .then(_ => (count ? saved : missing).push(`${tagRec[0].repo}@${tagRec[1]}`))
-    .then(_ => process.stdout.write('.'))
+    .then(_ => process.stdout.write(tagRec[2] ? '+' : '-'))
 
   function fetchVariant(fragment) {
     return queue(`https://github.com/${tagRec[0].key}/raw/${tagRec[1]}/${fragment}`)
@@ -51,7 +51,7 @@ function loadTag([tagRec, dst]) {
   }
 
   function trySave(req) {
-    if (count++) return
+    if (tagRec[2]++) return
 
     return new Promise(executor)
 
@@ -63,10 +63,17 @@ function loadTag([tagRec, dst]) {
   }
 }
 
-function Report() {
+function Report(bundle) {
   console.log()
-  if (saved.length) console.log('Found:')
-  saved.forEach(v => console.log('  -', v))
-  if (missing.length) console.log('Missing:')
-  missing.forEach(v => console.log('  -', v))
+
+  dumpGroup('Found', bundle.filter(rec => +rec[2] > 0))
+  dumpGroup('Missing', bundle.filter(rec => 0 === rec[2]))
+
+  return bundle
+}
+
+function dumpGroup(title, list) {
+  if (!list.length) return
+  console.log(`${title}:`)
+  list.forEach(rec => console.log('  -', `${rec[0].repo}@${rec[1]}`))
 }
