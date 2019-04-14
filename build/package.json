@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "github": "^0.2.2",
+    "js-yaml": "^3.13.1",
+    "make-dir": "^3.0.0",
     "node-fetch": "^2.3.0",
     "uglify-es": "^3.3.9"
   }

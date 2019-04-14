@@ -1,0 +1,10 @@
+jashkenas/coffeescript:
+  - docs/v1/browser-compiler/coffee-script.js
+  - extras/coffee-script.js
+  - docs/v2/browser-compiler-modern/coffeescript.js
+  - docs/v2/browser-compiler-legacy/coffeescript.js
+  - docs/v2/browser-compiler/coffeescript.js
+
+gkz/LiveScript:
+  - browser/livescript-min.js
+  - extras/livescript.js

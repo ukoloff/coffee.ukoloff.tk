@@ -1,9 +1,12 @@
 const fs = require('fs')
 const path = require('path')
 const https = require('https')
-const fetch = require('node-fetch')
 
-const repos = ['jashkenas/coffeescript', 'gkz/LiveScript']
+const fetch = require('node-fetch')
+const yaml = require('js-yaml')
+
+var sources = require('./sources')
+var promisify = require('./promisify')
 
 const root = path.join(__dirname, '../../js')
 
@@ -11,13 +14,22 @@ const root = path.join(__dirname, '../../js')
 https.globalAgent.maxSockets = 5
 https.globalAgent.keepAlive = true
 
-Promise.all(repos.map(listTags))
+sources
+  .then(fetchTags)
   .then(buildList)
+  .then(writeVersions)
   .then(reportCounts)
+  .then(zipList)
+  .then(saveList)
   .catch(Error)
 
-function listTags(repo) {
-  return fetch(`https://api.github.com/repos/${repo}/git/refs/tags`)
+function fetchTags(src) {
+  sources = src
+  return Promise.all(src.map(rec => listTags(rec.key)))
+}
+
+function listTags(key) {
+  return fetch(`https://api.github.com/repos/${key}/git/refs/tags`)
     .then(x => x.json())
 }
 
@@ -27,14 +39,17 @@ function Error(error) {
 }
 
 function buildList(arr) {
-  var res = zip(repos.map(langName), arr.map(repoTags))
-    .reduce((obj, [k, v]) => (obj[k] = v, obj), {})
+  return zip(sources, arr.map(repoTags))
+}
+
+function writeVersions(arr) {
+  var rec = arr.reduce((obj, [k, v]) => (obj[k.repo] = v, obj), {})
 
   fs.writeFile(path.join(root, 'versions.js'),
-    'define(' + JSON.stringify(res, null, '  ') + ')',
+    'define(' + JSON.stringify(rec, null, '  ') + ')',
     x => x)
 
-  return res
+  return arr
 }
 
 function repoTags(tags) {
@@ -42,10 +57,6 @@ function repoTags(tags) {
     .map(x => x.ref.replace(/[^]*\/v?/i, ''))
     .filter(x => /^\d+([.]\d+)*$/.test(x))
     .reverse()
-}
-
-function langName(repo) {
-  return repo.replace(/[^]*\//, '').toLowerCase()
 }
 
 function zip(...arrs) {
@@ -60,8 +71,21 @@ function zip(...arrs) {
   }
 }
 
-function reportCounts(res) {
-  for (k in res) {
-    console.log(`${k}:\t${res[k].length}`)
-  }
+function reportCounts(arr) {
+  arr.forEach(
+    it => console.log(`${it[0].repo}:\t${it[1].length}`));
+
+  return arr;
+}
+
+function zipList(arr) {
+  return [].concat(...arr.map(
+    rec => rec[1].map(item => [rec[0], item])))
+}
+
+function saveList(arr) {
+  promisify(fs.writeFile)(
+    path.join(__dirname, 'tags.yml'),
+    yaml.dump(arr))
+    .then(_ => arr)
 }
