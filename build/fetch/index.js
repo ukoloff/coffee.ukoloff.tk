@@ -47,7 +47,7 @@ function Error(error) {
 
 function repoTags(tags) {
   return tags
-    .map(x => x.ref.replace(/[^]*\/v?/i, ''))
+    .map(x => x.ref.replace(/[^]*\//i, ''))
     .filter(x => /^\d+([.]\d+)*$/.test(x))
     .reverse()
 }
@@ -73,7 +73,7 @@ function reportCounts(arr) {
 
 function zipList(arr) {
   return [].concat(...arr.map(
-    rec => rec[1].map(item => [rec[0], item])))
+    rec => rec[1].map(tag => ({$: rec[0], tag}))))
 }
 
 function saveList(arr) {
@@ -85,10 +85,9 @@ function saveList(arr) {
 
 function writeVersions(bundle) {
   var rec = bundle
-    .filter(rec => 0 !== rec[2])
+    .filter(rec => 0 !== rec.count)
     .reduce((obj, rec) =>
-      ((obj[rec[0].repo] || (obj[rec[0].repo] = [])).push(rec[1]), obj), {})
-  // var rec = arr.reduce((obj, [k, v]) => (obj[k.repo] = v, obj), {})
+      ((obj[rec.$.repo] || (obj[rec.$.repo] = [])).push(rec.tag), obj), {})
 
   fs.writeFile(path.join(save.root, 'versions.js'),
     'define(' + JSON.stringify(rec, null, '  ') + ')',

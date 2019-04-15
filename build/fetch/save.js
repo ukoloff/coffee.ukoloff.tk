@@ -31,7 +31,7 @@ function main() {
 }
 
 function ensureTag(tagRec) {
-  const dst = path.join(root, tagRec[0].repo, tagRec[1], tagRec[0].repo + '.js')
+  const dst = path.join(root, tagRec.$.repo, tagRec.tag, tagRec.$.repo + '.js')
   return stat(dst)
     .then(_ => true)
     .catch(_ => Promise.resolve([tagRec, dst]).then(loadTag))
@@ -39,19 +39,19 @@ function ensureTag(tagRec) {
 
 function loadTag([tagRec, dst]) {
 
-  tagRec[2] = 0
+  tagRec.count = 0
 
   return makeDir(path.dirname(dst))
-    .then(_ => Promise.all(tagRec[0].paths.map(fetchVariant)))
-    .then(_ => process.stdout.write(tagRec[2] ? '+' : '-'))
+    .then(_ => Promise.all(tagRec.$.paths.map(fetchVariant)))
+    .then(_ => process.stdout.write(tagRec.count ? '+' : '-'))
 
   function fetchVariant(fragment) {
-    return queue(`https://github.com/${tagRec[0].key}/raw/${tagRec[1]}/${fragment}`)
+    return queue(`https://github.com/${tagRec.$.key}/raw/${tagRec.tag}/${fragment}`)
       .then(req => req.ok ? trySave(req) : false, _ => false)
   }
 
   function trySave(req) {
-    if (tagRec[2]++) return
+    if (tagRec.count++) return
 
     return new Promise(executor)
 
@@ -66,8 +66,8 @@ function loadTag([tagRec, dst]) {
 function Report(bundle) {
   console.log()
 
-  dumpGroup('Found', bundle.filter(rec => +rec[2] > 0))
-  dumpGroup('Missing', bundle.filter(rec => 0 === rec[2]))
+  dumpGroup('Found', bundle.filter(rec => +rec.count > 0))
+  dumpGroup('Missing', bundle.filter(rec => 0 === rec.count))
 
   return bundle
 }
@@ -75,5 +75,5 @@ function Report(bundle) {
 function dumpGroup(title, list) {
   if (!list.length) return
   console.log(`${title}:`)
-  list.forEach(rec => console.log('  -', `${rec[0].repo}@${rec[1]}`))
+  list.forEach(rec => console.log('  -', `${rec.$.repo}@${rec.tag}`))
 }
