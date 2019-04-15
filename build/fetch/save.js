@@ -6,6 +6,7 @@ const makeDir = require('make-dir')
 
 const promisify = require('./promisify')
 const queue = require('./queue')(10)
+const ver = require('./ver')
 
 module.exports = save
 const root = save.root = path.join(__dirname, '../../js')
@@ -14,8 +15,10 @@ const stat = promisify(fs.stat)
 
 if (!module.parent) main()
 
+var minVersions, minPromise
+
 function save(bundle) {
-  process.stdout.write('# ')
+  minPromise || (minPromise = ver.read.mins().then(v => minVersions = v))
 
   return Promise.all(bundle.map(ensureTag))
     .then(_ => bundle)
@@ -34,7 +37,20 @@ function ensureTag(tagRec) {
   const dst = path.join(root, tagRec.$.repo, tagRec.tag, tagRec.$.repo + '.js')
   return stat(dst)
     .then(_ => true)
-    .catch(_ => Promise.resolve([tagRec, dst]).then(loadTag))
+    .catch(checkMinVer)
+
+  function checkMinVer() {
+    return Promise.resolve(minVersions || minPromise)
+      .then(compare)
+  }
+
+  function compare(mins) {
+    mins = mins[tagRec.$.repo]
+    if (!mins || ver.cmp(mins, ver(tagRec.tag)) <= 0) {
+      return Promise.resolve([tagRec, dst]).then(loadTag)
+    }
+    tagRec.count = 0
+  }
 }
 
 function loadTag([tagRec, dst]) {
@@ -43,8 +59,8 @@ function loadTag([tagRec, dst]) {
 
   return makeDir(path.dirname(dst))
     .then(_ => Promise.all(tagRec.$.paths.map(fetchVariant)))
-    .then(_ => {})
-    // .then(_ => process.stdout.write(tagRec.count ? '+' : '-'))
+    .then(_ => { })
+  // .then(_ => process.stdout.write(tagRec.count ? '+' : '-'))
 
   function fetchVariant(fragment) {
     return queue(`https://github.com/${tagRec.$.key}/raw/${tagRec.tag}/${fragment}`)

@@ -4,6 +4,7 @@ const path = require('path')
 const fetch = require('node-fetch')
 const yaml = require('js-yaml')
 
+const ver = require('./ver')
 const save = require('./save')
 const promisify = require('./promisify')
 
@@ -89,9 +90,6 @@ function writeVersions(bundle) {
     .reduce((obj, rec) =>
       ((obj[rec.$.repo] || (obj[rec.$.repo] = [])).push(rec.tag), obj), {})
 
-  fs.writeFile(path.join(save.root, 'versions.js'),
-    'define(' + JSON.stringify(rec, null, '  ') + ')',
-    x => x)
-
-  return bundle
+  return ver.write(rec)
+    .then(_ => bundle)
 }
