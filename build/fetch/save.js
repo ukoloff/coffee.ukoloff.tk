@@ -43,7 +43,8 @@ function loadTag([tagRec, dst]) {
 
   return makeDir(path.dirname(dst))
     .then(_ => Promise.all(tagRec.$.paths.map(fetchVariant)))
-    .then(_ => process.stdout.write(tagRec.count ? '+' : '-'))
+    .then(_ => {})
+    // .then(_ => process.stdout.write(tagRec.count ? '+' : '-'))
 
   function fetchVariant(fragment) {
     return queue(`https://github.com/${tagRec.$.key}/raw/${tagRec.tag}/${fragment}`)

@@ -11,10 +11,15 @@ module.exports = queue
 
 function queue(count) {
   var queue = []
+  var total = 0, done = 0
+  var lastShown, showTime = 0
 
   return append
 
   function append(url) {
+    total++
+    progress()
+
     return new Promise(resolve =>
       count
         ? (count-- , resolve(url))
@@ -39,5 +44,17 @@ function queue(count) {
     } else {
       count++
     }
+    done++
+    progress()
+  }
+
+  function progress() {
+    var time = + new Date
+    if (time < showTime + 100) return
+    var pair = `${done}/${total}`
+    if (pair === lastShown) return
+
+    showTime = time
+    process.stdout.write(`\r# ${lastShown = pair} (${Math.floor(done * 100 / total)}%)`)
   }
 }
